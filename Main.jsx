@@ -1,12 +1,19 @@
-import React from "react";
+import {useState, useEffect, useRef} from "react";
 import IngredientsList from "./components/IngredientsList";
 import ClaudeRecipe from "./components/ClaudeRecipe";
 import { getRecipeFromMistral } from "./server";
 export default function Main() {
-    const [ingredients, setIngredients] = React.useState([]);
-    const [recipe, setRecipe] = React.useState("");
-    const [error, setError] = React.useState(null);
+    const [ingredients, setIngredients] = useState([]);
+    const [recipe, setRecipe] = useState("");
+    const [error, setError] = useState(null);
+    const recipeRef = useRef(null)
 
+
+    useEffect(()=>{
+        if(recipe && recipeRef.current){
+            recipeRef.current.scrollIntoView({behavior: "smooth"});
+        }
+    }, [recipe])
     async function handleGetRecipe() {
         try {
             const generatedRecipe = await getRecipeFromMistral(ingredients)
@@ -46,6 +53,7 @@ export default function Main() {
 
             {ingredients.length > 0 && (
                 <IngredientsList
+                    ref={recipeRef}
                     ingredients={ingredients}
                     handleGetRecipe={handleGetRecipe}
                 />
