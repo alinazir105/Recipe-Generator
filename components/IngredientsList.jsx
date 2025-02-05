@@ -1,4 +1,5 @@
-export default function IngredientsList(props) {
+import { forwardRef } from "react"
+function IngredientsList(props, ref) {
     const ingredientsListItems = props.ingredients.map(ingredient => (
         <li key={ingredient}>{ingredient}</li>
     ))
@@ -16,3 +17,5 @@ export default function IngredientsList(props) {
         </section>
     )
 }
+
+export default forwardRef(IngredientsList)
